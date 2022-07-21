@@ -8,7 +8,6 @@
 
 import Foundation
 import Apodini
-import ApodiniAudit
 
 struct DictionaryEntry: Content {
     var word: String

@@ -21,7 +21,7 @@ let package = Package(
         .executable(name: "ImprovedLinguaWebService", targets: ["ImprovedLinguaWebService"])
     ],
     dependencies: [
-        .package(name: "Apodini", path: "../Apodini")
+        .package(name: "Apodini", path: "../Apodini-clean")
     ],
     targets: [
         .executableTarget(
