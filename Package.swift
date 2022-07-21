@@ -17,24 +17,41 @@ let package = Package(
         .macOS(.v11)
     ],
     products: [
-        .executable(name: "LinguaWebService", targets: ["LinguaWebService"])
+        .executable(name: "BadLinguaWebService", targets: ["BadLinguaWebService"]),
+        .executable(name: "ImprovedLinguaWebService", targets: ["ImprovedLinguaWebService"])
     ],
     dependencies: [
         .package(name: "Apodini", path: "../Apodini")
     ],
     targets: [
         .executableTarget(
-            name: "LinguaWebService",
+            name: "BadLinguaWebService",
             dependencies: [
                 .product(name: "Apodini", package: "Apodini"),
                 .product(name: "ApodiniHTTP", package: "Apodini"),
                 .product(name: "ApodiniREST", package: "Apodini"),
-                .product(name: "ApodiniAudit", package: "Apodini")
+                .product(name: "ApodiniAudit", package: "Apodini"),
+                .target(name: "Shared")
+            ]),
+        .executableTarget(
+            name: "ImprovedLinguaWebService",
+            dependencies: [
+                .product(name: "Apodini", package: "Apodini"),
+                .product(name: "ApodiniHTTP", package: "Apodini"),
+                .product(name: "ApodiniREST", package: "Apodini"),
+                .product(name: "ApodiniAudit", package: "Apodini"),
+                .target(name: "Shared")
+            ]),
+        .target(
+            name: "Shared",
+            dependencies: [
+                .product(name: "Apodini", package: "Apodini")
             ]),
         .testTarget(
             name: "LinguaWebServiceTests",
             dependencies: [
-                .target(name: "LinguaWebService")
+                .target(name: "BadLinguaWebService"),
+                .target(name: "ImprovedLinguaWebService")
             ]
         )
     ]
