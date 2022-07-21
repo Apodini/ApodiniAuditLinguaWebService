@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 
 //
 // This source file is part of the Apodini open source project
@@ -12,19 +12,29 @@ import PackageDescription
 
 
 let package = Package(
-    name: "ApodiniTemplate",
+    name: "ApodiniAuditLinguaWebService",
     platforms: [
         .macOS(.v11)
     ],
     products: [
-        .library(name: "ApodiniTemplate", targets: ["ApodiniTemplate"])
+        .executable(name: "LinguaWebService", targets: ["LinguaWebService"])
+    ],
+    dependencies: [
+        .package(name: "Apodini", path: "../Apodini")
     ],
     targets: [
-        .target(name: "ApodiniTemplate"),
-        .testTarget(
-            name: "ApodiniTemplateTests",
+        .executableTarget(
+            name: "LinguaWebService",
             dependencies: [
-                .target(name: "ApodiniTemplate")
+                .product(name: "Apodini", package: "Apodini"),
+                .product(name: "ApodiniHTTP", package: "Apodini"),
+                .product(name: "ApodiniREST", package: "Apodini"),
+                .product(name: "ApodiniAudit", package: "Apodini")
+            ]),
+        .testTarget(
+            name: "LinguaWebServiceTests",
+            dependencies: [
+                .target(name: "LinguaWebService")
             ]
         )
     ]
