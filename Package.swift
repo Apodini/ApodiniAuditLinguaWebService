@@ -21,7 +21,7 @@ let package = Package(
         .executable(name: "ImprovedLinguaWebService", targets: ["ImprovedLinguaWebService"])
     ],
     dependencies: [
-        .package(name: "Apodini", path: "../Apodini-clean")
+        .package(name: "Apodini", path: "../Apodini")
     ],
     targets: [
         .executableTarget(
@@ -31,6 +31,7 @@ let package = Package(
                 .product(name: "ApodiniHTTP", package: "Apodini"),
                 .product(name: "ApodiniREST", package: "Apodini"),
                 .product(name: "ApodiniAudit", package: "Apodini"),
+                .product(name: "ApodiniOpenAPI", package: "Apodini"),
                 .target(name: "Shared")
             ]),
         .executableTarget(
@@ -40,6 +41,7 @@ let package = Package(
                 .product(name: "ApodiniHTTP", package: "Apodini"),
                 .product(name: "ApodiniREST", package: "Apodini"),
                 .product(name: "ApodiniAudit", package: "Apodini"),
+                .product(name: "ApodiniOpenAPI", package: "Apodini"),
                 .target(name: "Shared")
             ]),
         .target(

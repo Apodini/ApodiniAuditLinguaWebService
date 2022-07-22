@@ -9,6 +9,7 @@
 import Foundation
 import Apodini
 import ApodiniAudit
+import Shared
 
 struct RestrictDictionaryResourceBestPractice: BestPractice {
     static var scope: BestPracticeScopes = .rest

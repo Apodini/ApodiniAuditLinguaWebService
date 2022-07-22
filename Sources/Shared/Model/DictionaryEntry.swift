@@ -9,6 +9,6 @@
 import Foundation
 import Apodini
 
-struct DictionaryEntry: Content {
+public struct DictionaryEntry: Content {
     var word: String
 }
