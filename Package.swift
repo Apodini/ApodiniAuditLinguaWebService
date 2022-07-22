@@ -48,6 +48,9 @@ let package = Package(
             name: "Shared",
             dependencies: [
                 .product(name: "Apodini", package: "Apodini")
+            ],
+            resources: [
+                .process("Resources")
             ]),
         .testTarget(
             name: "LinguaWebServiceTests",

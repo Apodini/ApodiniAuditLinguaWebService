@@ -15,8 +15,18 @@ import ArgumentParser
 @main
 struct BadLinguaWebService: Apodini.WebService {
     var content: some Component {
-        Group("Hello") {
-            Text("Hi")
+        Group("en") {
+            Group("lectures") {
+                LectureComponent(language: .english)
+            }
+            Group("dictionary") {
+                DictionaryComponent(language: .english)
+            }
+        }
+        Group("de") {
+            Group("lektionen") {
+                LectureComponent(language: .german)
+            }
         }
     }
     
@@ -25,4 +35,8 @@ struct BadLinguaWebService: Apodini.WebService {
             APIAuditor()
         }
     }
+}
+
+enum Language {
+    case german, english
 }
