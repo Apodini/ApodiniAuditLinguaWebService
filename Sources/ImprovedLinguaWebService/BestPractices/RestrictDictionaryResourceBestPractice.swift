@@ -24,18 +24,20 @@ struct RestrictDictionaryResourceBestPractice: BestPractice {
             return
         }
 
-        // Extract the root segment of the endpoint
-        let rootSegment = audit.endpoint.absolutePath[0]
-        
-        switch rootSegment {
-        case .string(let path):
-            if !configuration.allowedRootPaths.contains(path) {
-//                audit.recordFinding(Finding)
+        // Extract the String version of the Endpoint's path
+        let pathString = "/" + audit.endpoint.absolutePath.map { segment in
+                segment.description
             }
-        case .root:
-            return
-        case .parameter(_):
-            return
+            .joined(separator: "/")
+        
+        // Check whether the Endpoint's path starts with one of the allowed paths
+        let hasValidPrefix = configuration.allowedPrefixes.contains {
+            pathString.hasPrefix($0)
+        }
+        
+        if !hasValidPrefix {
+            // We record a finding if the path does not start with an allowed prefix
+            audit.recordFinding(DictionaryEntryResourceFinding.dictionaryEntryAtIllegalLocation(path: pathString))
         }
     }
 }
@@ -56,5 +58,5 @@ struct ReasonableParameterCountConfiguration: BestPracticeConfiguration {
         RestrictDictionaryResourceBestPractice(configuration: self)
     }
     
-    var allowedRootPaths = ["dictionary"]
+    var allowedPrefixes = ["dictionary"]
 }
