@@ -15,6 +15,8 @@ struct ImageComponent: Component {
     @PathParameter var imageId: Int
     
     var content: some Component {
-        GetImageHandler(lectureId: $lectureId, imageId: $imageId)
+        Group($imageId) {
+            GetImageHandler(lectureId: $lectureId, imageId: $imageId)
+        }
     }
 }

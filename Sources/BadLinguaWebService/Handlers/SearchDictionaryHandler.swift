@@ -10,8 +10,7 @@ import Foundation
 import Apodini
 import Shared
 
-struct SearchDictionaryHandler<T: DictionaryEntry>: Handler {
-    typealias Response = [T]
+struct SearchDictionaryHandler: Handler {
     
     // Fictional query parameters
     @Parameter(.http(.query)) var entriesPerPage: Int
@@ -28,7 +27,7 @@ struct SearchDictionaryHandler<T: DictionaryEntry>: Handler {
     @Parameter(.http(.query)) var includeEtymology: String
     
     
-    func handle() throws -> [T] {
-        [T.init("Hello")]
+    func handle() throws -> [DictionaryEntry] {
+        [DictionaryEntry("Hello")]
     }
 }

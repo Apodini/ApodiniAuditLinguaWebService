@@ -21,21 +21,15 @@ struct DictionaryComponent: Component {
         }
     }
     
-    var personalString: String {
-        switch language {
-        case .english:
-            return "personal"
-        case .german:
-            return "persoenlich"
-        }
-    }
+    @PathParameter var entryId: Int
     
     var content: some Component {
         Group(entriesString) {
-            DictionaryEntryStore(personalStore: false)
-        }
-        Group(personalString, entriesString) {
-            DictionaryEntryStore(personalStore: true)
+            Group($entryId) {
+                DeleteDictionaryEntryHandler(entryId: $entryId)
+                GetDictionaryEntryHandler(entryId: $entryId)
+            }
+            SearchDictionaryHandler()
         }
     }
 }

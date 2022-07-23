@@ -13,14 +13,18 @@ import FluentKit
 import ApodiniDatabase
 import ApodiniNetworking
 
-struct DeletePrivateDictionaryEntryHandler: Handler {
+struct DeleteDictionaryEntryHandler: Handler {
     @Binding var entryId: Int
     
     @Apodini.Environment(\.database) private var database: FluentKit.Database
     
     func handle() throws -> EventLoopFuture<Status> {
-        PrivateDictionaryEntry.find(entryId, on: database)
-            .flatMap { ($0 ?? PrivateDictionaryEntry()).delete(on: database ) }
+        DictionaryEntry.find(entryId, on: database)
+            .flatMap { ($0 ?? DictionaryEntry()).delete(on: database ) }
             .transform(to: .noContent)
+    }
+    
+    var metadata: AnyHandlerMetadata {
+        Operation(.delete)
     }
 }

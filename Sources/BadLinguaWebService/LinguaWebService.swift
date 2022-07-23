@@ -27,6 +27,9 @@ struct BadLinguaWebService: Apodini.WebService {
             Group("lektionen") {
                 LectureComponent(language: .german)
             }
+            Group("woerterbuch") {
+                DictionaryComponent(language: .german)
+            }
         }
     }
     
