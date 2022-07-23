@@ -21,7 +21,8 @@ let package = Package(
         .executable(name: "ImprovedLinguaWebService", targets: ["ImprovedLinguaWebService"])
     ],
     dependencies: [
-        .package(name: "Apodini", path: "../Apodini")
+        .package(name: "Apodini", path: "../Apodini"),
+        .package(url: "https://github.com/vapor/fluent-kit.git", from: "1.16.0")
     ],
     targets: [
         .executableTarget(
@@ -32,6 +33,8 @@ let package = Package(
                 .product(name: "ApodiniREST", package: "Apodini"),
                 .product(name: "ApodiniAudit", package: "Apodini"),
                 .product(name: "ApodiniOpenAPI", package: "Apodini"),
+                .product(name: "ApodiniDatabase", package: "Apodini"),
+                .product(name: "FluentKit", package: "fluent-kit"),
                 .target(name: "Shared")
             ]),
         .executableTarget(
@@ -42,12 +45,15 @@ let package = Package(
                 .product(name: "ApodiniREST", package: "Apodini"),
                 .product(name: "ApodiniAudit", package: "Apodini"),
                 .product(name: "ApodiniOpenAPI", package: "Apodini"),
+                .product(name: "ApodiniDatabase", package: "Apodini"),
+                .product(name: "FluentKit", package: "fluent-kit"),
                 .target(name: "Shared")
             ]),
         .target(
             name: "Shared",
             dependencies: [
-                .product(name: "Apodini", package: "Apodini")
+                .product(name: "Apodini", package: "Apodini"),
+                .product(name: "ApodiniDatabase", package: "Apodini")
             ],
             resources: [
                 .process("Resources")

@@ -10,11 +10,32 @@ import Foundation
 import Apodini
 
 struct DictionaryComponent: Component {
-    @Binding var lectureId: Int
+    var language: Language
     
-    @PathParameter var imageId: Int
+    var entriesString: String {
+        switch language {
+        case .german:
+            return "entries"
+        case .english:
+            return "eintraege"
+        }
+    }
+    
+    var personalString: String {
+        switch language {
+        case .english:
+            return "personal"
+        case .german:
+            return "persoenlich"
+        }
+    }
     
     var content: some Component {
-        GetImageHandler(lectureId: $lectureId, imageId: $imageId)
+        Group(entriesString) {
+            DictionaryEntryStore(personalStore: false)
+        }
+        Group(personalString, entriesString) {
+            DictionaryEntryStore(personalStore: true)
+        }
     }
 }
