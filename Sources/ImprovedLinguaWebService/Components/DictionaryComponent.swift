@@ -8,6 +8,8 @@
 
 import Foundation
 import Apodini
+import ApodiniDatabase
+import Shared
 
 struct DictionaryComponent: Component {
     var language: Language
@@ -21,15 +23,22 @@ struct DictionaryComponent: Component {
         }
     }
     
-    @PathParameter var entryId: Int
+    var favoritesString: String {
+        switch language {
+        case .german:
+            return "favoriten"
+        case .english:
+            return "favorites"
+        }
+    }
     
     var content: some Component {
         Group(entriesString) {
-            Group($entryId) {
-                DeleteDictionaryEntryHandler(entryId: $entryId)
-                GetDictionaryEntryHandler(entryId: $entryId)
-            }
+            Delete<DictionaryEntry>()
             SearchDictionaryHandler()
+        }
+        Group(favoritesString) {
+            DictionaryFavoritesComponent()
         }
     }
 }

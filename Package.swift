@@ -21,6 +21,7 @@ let package = Package(
         .executable(name: "ImprovedLinguaWebService", targets: ["ImprovedLinguaWebService"])
     ],
     dependencies: [
+//        .package(url: "https://github.com/Apodini/Apodini.git", branch: "simonbohnen/pythonkit"),
         .package(name: "Apodini", path: "../Apodini"),
         .package(url: "https://github.com/vapor/fluent-kit.git", from: "1.16.0")
     ],
@@ -34,6 +35,8 @@ let package = Package(
                 .product(name: "ApodiniAudit", package: "Apodini"),
                 .product(name: "ApodiniOpenAPI", package: "Apodini"),
                 .product(name: "ApodiniDatabase", package: "Apodini"),
+                .product(name: "ApodiniAuthorizationBasicScheme", package: "Apodini"),
+                .product(name: "ApodiniAuthorization", package: "Apodini"),
                 .product(name: "FluentKit", package: "fluent-kit"),
                 .target(name: "Shared")
             ]),
@@ -46,6 +49,8 @@ let package = Package(
                 .product(name: "ApodiniAudit", package: "Apodini"),
                 .product(name: "ApodiniOpenAPI", package: "Apodini"),
                 .product(name: "ApodiniDatabase", package: "Apodini"),
+                .product(name: "ApodiniAuthorizationBasicScheme", package: "Apodini"),
+                .product(name: "ApodiniAuthorization", package: "Apodini"),
                 .product(name: "FluentKit", package: "fluent-kit"),
                 .target(name: "Shared")
             ]),
@@ -53,7 +58,8 @@ let package = Package(
             name: "Shared",
             dependencies: [
                 .product(name: "Apodini", package: "Apodini"),
-                .product(name: "ApodiniDatabase", package: "Apodini")
+                .product(name: "ApodiniDatabase", package: "Apodini"),
+                .product(name: "ApodiniAudit", package: "Apodini")
             ],
             resources: [
                 .process("Resources")

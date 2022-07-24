@@ -11,18 +11,56 @@ import ApodiniHTTP
 import ApodiniREST
 import ApodiniAudit
 import ArgumentParser
+import Shared
+import ApodiniAuthorizationBasicScheme
+import ApodiniAuthorization
+import ApodiniAudit
 
 @main
 struct ImprovedLinguaWebService: Apodini.WebService {
     var content: some Component {
-        Group("Hello") {
-            Text("Hi")
+        Group("en") {
+            Group("lectures") {
+                LectureComponent(language: .english)
+            }
+            Group("dictionary") {
+                DictionaryComponent(language: .english)
+            }
+        }
+        Group("de") {
+            Group("lektionen") {
+                LectureComponent(language: .german)
+            }
+            Group("woerterbuch") {
+                DictionaryComponent(language: .german)
+            }
+        }
+        .metadata {
+            SelectBestPractices(.exclude, .linguistic)
         }
     }
     
     var configuration: Configuration {
         REST {
-            APIAuditor()
+            APIAuditor {
+                RestrictDictionaryEntryResource(allowedPrefixes: [
+                    "/en/dictionary",
+                    "/de/woerterbuch"
+                ])
+                ReasonableParameterCountConfiguration(maximumCount: 15)
+                AppropriateLengthForURLPathSegmentsConfiguration(allowedSegments: ["en", "de"])
+            }
         }
     }
+    
+    var metadata: AnyWebServiceMetadata {
+        Authorize(
+            MockCredentials<Int>.self,
+            using: BasicAuthenticationScheme(),
+            verifiedBy: MockCredentialVerifier(expectedPassword: "123456", state: 1))
+    }
+}
+
+enum Language {
+    case german, english
 }

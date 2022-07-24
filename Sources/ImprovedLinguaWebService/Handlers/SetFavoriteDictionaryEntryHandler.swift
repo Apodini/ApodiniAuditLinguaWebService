@@ -13,16 +13,14 @@ import FluentKit
 import ApodiniDatabase
 import ApodiniNetworking
 
-struct GetDictionaryEntryHandler: Handler {
-    @Throws(.notFound, reason: "Could not find a dictionary entry with this ID.")
-    var entryNotFound: ApodiniError
-    
+struct SetFavoriteDictionaryEntryHandler: Handler {
     @Binding var entryId: Int
     
-    @Apodini.Environment(\.database) private var database: FluentKit.Database
+    func handle() throws -> DictionaryEntry {
+        DictionaryEntry("example")
+    }
     
-    func handle() throws -> EventLoopFuture<DictionaryEntry> {
-        DictionaryEntry.find(entryId, on: database)
-            .unwrap(orError: entryNotFound)
+    var metadata: AnyHandlerMetadata {
+        Operation(.create)
     }
 }

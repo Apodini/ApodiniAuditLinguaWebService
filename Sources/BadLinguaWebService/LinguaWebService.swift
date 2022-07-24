@@ -11,6 +11,9 @@ import ApodiniHTTP
 import ApodiniREST
 import ApodiniAudit
 import ArgumentParser
+import ApodiniAuthorization
+import ApodiniAuthorizationBasicScheme
+import Shared
 
 @main
 struct BadLinguaWebService: Apodini.WebService {
@@ -22,6 +25,12 @@ struct BadLinguaWebService: Apodini.WebService {
             Group("dictionary") {
                 DictionaryComponent(language: .english)
             }
+            Group("getFavoriteLectures") {
+                GetFavoriteLecturesHandler()
+            }
+            Group("favorites") {
+                DictionaryFavoritesComponent()
+            }
         }
         Group("de") {
             Group("lektionen") {
@@ -30,13 +39,31 @@ struct BadLinguaWebService: Apodini.WebService {
             Group("woerterbuch") {
                 DictionaryComponent(language: .german)
             }
+            Group("holeFavorisierteLektionen") {
+                GetFavoriteLecturesHandler()
+            }
+            Group("favoriten") {
+                DictionaryFavoritesComponent()
+            }
         }
     }
     
     var configuration: Configuration {
         REST {
-            APIAuditor()
+            APIAuditor {
+                RestrictDictionaryEntryResource(allowedPrefixes: [
+                    "/en/dictionary",
+                    "/de/woerterbuch"
+                ])
+            }
         }
+    }
+    
+    var metadata: AnyWebServiceMetadata {
+        Authorize(
+            MockCredentials<Int>.self,
+            using: BasicAuthenticationScheme(),
+            verifiedBy: MockCredentialVerifier(expectedPassword: "123456", state: 1))
     }
 }
 
