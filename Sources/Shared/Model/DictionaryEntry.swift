@@ -13,14 +13,15 @@ import ApodiniDatabase
 public final class DictionaryEntry: DatabaseModel {
     public static let schema: String = "dictionaryentries"
     
-    @ID
+    @ID(custom: "entryid")
     public var id: Int?
     @Field(key: "word")
     public var word: String
     @Field(key: "creation_date")
     public var creationDate: Date
     
-    public init(_ word: String, _ creationDate: Date = .default) {
+    public init(_ id: Int, _ word: String, _ creationDate: Date = .default) {
+        self.id = id
         self.word = word
         self.creationDate = creationDate
     }
@@ -28,9 +29,7 @@ public final class DictionaryEntry: DatabaseModel {
     public init() {}
     
     public func update(_ object: DictionaryEntry) {
-        if object.id != nil {
-            self.id = object.id
-        }
+        self.id = object.id
         self.word = object.word
         self.creationDate = object.creationDate
     }

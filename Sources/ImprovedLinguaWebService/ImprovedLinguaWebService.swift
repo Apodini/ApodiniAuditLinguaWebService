@@ -15,6 +15,8 @@ import Shared
 import ApodiniAuthorizationBasicScheme
 import ApodiniAuthorization
 import ApodiniAudit
+import ApodiniDatabase
+import FluentSQLiteDriver
 
 @main
 struct ImprovedLinguaWebService: Apodini.WebService {
@@ -51,6 +53,9 @@ struct ImprovedLinguaWebService: Apodini.WebService {
                 AppropriateLengthForURLPathSegmentsConfiguration(allowedSegments: ["en", "de"])
             }
         }
+        
+        DatabaseConfiguration(.sqlite(.memory), as: .sqlite)
+            .addMigrations(DictionaryMigration())
     }
     
     var metadata: AnyWebServiceMetadata {

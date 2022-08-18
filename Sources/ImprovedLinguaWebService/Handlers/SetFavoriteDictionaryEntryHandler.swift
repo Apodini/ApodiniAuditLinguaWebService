@@ -17,7 +17,7 @@ struct SetFavoriteDictionaryEntryHandler: Handler {
     @Binding var entryId: Int
     
     func handle() throws -> DictionaryEntry {
-        DictionaryEntry("example")
+        DictionaryEntry(0, "example")
     }
     
     var metadata: AnyHandlerMetadata {

@@ -23,7 +23,8 @@ let package = Package(
     dependencies: [
 //        .package(url: "https://github.com/Apodini/Apodini.git", branch: "simonbohnen/pythonkit"),
         .package(name: "Apodini", path: "../Apodini"),
-        .package(url: "https://github.com/vapor/fluent-kit.git", from: "1.16.0")
+        .package(url: "https://github.com/vapor/fluent-kit.git", from: "1.16.0"),
+        .package(url: "https://github.com/vapor/fluent-sqlite-driver", from: "4.2.0")
     ],
     targets: [
         .executableTarget(
@@ -38,6 +39,7 @@ let package = Package(
                 .product(name: "ApodiniAuthorizationBasicScheme", package: "Apodini"),
                 .product(name: "ApodiniAuthorization", package: "Apodini"),
                 .product(name: "FluentKit", package: "fluent-kit"),
+                .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
                 .target(name: "Shared")
             ]),
         .executableTarget(
@@ -52,6 +54,7 @@ let package = Package(
                 .product(name: "ApodiniAuthorizationBasicScheme", package: "Apodini"),
                 .product(name: "ApodiniAuthorization", package: "Apodini"),
                 .product(name: "FluentKit", package: "fluent-kit"),
+                .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
                 .target(name: "Shared")
             ]),
         .target(
@@ -68,7 +71,10 @@ let package = Package(
             name: "LinguaWebServiceTests",
             dependencies: [
                 .target(name: "BadLinguaWebService"),
-                .target(name: "ImprovedLinguaWebService")
+                .target(name: "ImprovedLinguaWebService"),
+                .product(name: "XCTApodiniNetworking", package: "Apodini"),
+                .product(name: "ApodiniHTTPProtocol", package: "Apodini"),
+                .product(name: "XCTApodini", package: "Apodini")
             ]
         )
     ]

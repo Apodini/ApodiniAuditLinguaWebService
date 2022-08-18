@@ -28,6 +28,6 @@ struct SearchDictionaryHandler: Handler {
     
     
     func handle() throws -> [DictionaryEntry] {
-        [DictionaryEntry("Hello")]
+        [DictionaryEntry(0, "Hello")]
     }
 }

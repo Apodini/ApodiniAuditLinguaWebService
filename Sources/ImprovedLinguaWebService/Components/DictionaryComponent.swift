@@ -35,6 +35,7 @@ struct DictionaryComponent: Component {
     var content: some Component {
         Group(entriesString) {
             Delete<DictionaryEntry>()
+            ReadOne<DictionaryEntry>()
             SearchDictionaryHandler()
         }
         Group(favoritesString) {
