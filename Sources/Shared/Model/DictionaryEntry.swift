@@ -10,7 +10,11 @@ import Foundation
 import Apodini
 import ApodiniDatabase
 
-public final class DictionaryEntry: DatabaseModel {
+public final class DictionaryEntry: DatabaseModel, Equatable {
+    public static func == (lhs: DictionaryEntry, rhs: DictionaryEntry) -> Bool {
+        lhs.id == rhs.id && lhs.word == rhs.word
+    }
+    
     public static let schema: String = "dictionaryentries"
     
     @ID(custom: "entryid")

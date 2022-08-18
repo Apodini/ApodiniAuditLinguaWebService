@@ -13,16 +13,7 @@ import XCTest
 import XCTApodiniNetworking
 import ApodiniHTTPProtocol
 import XCTApodini
-
-struct RESTResponse: Codable {
-    var data: String
-    var links: [String: String]
-    
-    enum CodingKeys: String, CodingKey {
-        case data
-        case links = "_links"
-    }
-}
+import Shared
 
 /// Checks that the WebService's output is correct, such as correct status code upon unauthorized access.
 /// We use the ``ImprovedLinguaWebService`` here.
@@ -61,19 +52,27 @@ final class EnforcableBPTests: XCTApodiniTest {
         
         // Test that the endpoints at least contain a self link
         try app.testable().test(.GET, "/en/lectures/favorites", headers: authHeaders) { response in
-            XCTAssertEqual(try response.bodyStorage.getFullBodyData(decodedAs: RESTResponse.self).links, [
+            XCTAssertEqual(try response.bodyStorage.getFullBodyData(decodedAs: RESTResponse<String>.self).links, [
                 "self" : "http://localhost/en/lectures/favorites"
             ])
         }
     }
     
     func testDeleteReturnValue() throws {
-        // Test that the endpoints at least contain a self link
-        try app.testable().test(.GET, "/en/dictionary/entries/0", headers: authHeaders) { response in
-            print(response.bodyStorage.getFullBodyDataAsString())
-            XCTAssertEqual(try response.bodyStorage.getFullBodyData(decodedAs: RESTResponse.self).links, [
-                "self" : "http://localhost/en/lectures/favorites"
-            ])
+        // Tests that the return type of the DELETE endpoint is a DictionaryEntry
+        try app.testable().test(.DELETE, "/en/dictionary/entries/0", headers: authHeaders) { response in
+            XCTAssertEqual(response.status, .ok)
+            XCTAssertEqual(try response.bodyStorage.getFullBodyData(decodedAs: RESTResponse<DictionaryEntry>.self).data, DictionaryEntry(0, "moin"))
         }
+    }
+}
+
+struct RESTResponse<D: Codable>: Codable {
+    var data: D
+    var links: [String: String]
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+        case links = "_links"
     }
 }
