@@ -21,6 +21,7 @@ let package = Package(
         .executable(name: "ImprovedLinguaWebService", targets: ["ImprovedLinguaWebService"])
     ],
     dependencies: [
+        // FUTURE change to standard Apodini
         .package(url: "https://github.com/Apodini/Apodini.git", branch: "simonbohnen/pythonkit"),
 //        .package(name: "Apodini", path: "../Apodini"),
         .package(url: "https://github.com/vapor/fluent-kit.git", from: "1.16.0"),

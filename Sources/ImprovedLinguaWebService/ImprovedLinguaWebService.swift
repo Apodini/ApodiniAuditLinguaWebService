@@ -50,7 +50,7 @@ struct ImprovedLinguaWebService: Apodini.WebService {
                     "/de/woerterbuch"
                 ])
                 ReasonableParameterCountConfiguration(maximumCount: 15)
-                AppropriateLengthForURLPathSegmentsConfiguration(allowedSegments: ["en", "de"])
+                URLPathSegmentLengthConfiguration(allowedSegments: ["en", "de"])
             }
         }
         
