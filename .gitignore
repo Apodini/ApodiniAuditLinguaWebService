@@ -1,7 +1,7 @@
 #                   
 # This source file is part of the Apodini open source project
 # 
-# SPDX-FileCopyrightText: 2021 Paul Schmiedmayer and the project authors (see CONTRIBUTORS.md) <paul.schmiedmayer@tum.de>
+# SPDX-FileCopyrightText: 2019-2021 Paul Schmiedmayer and the Apodini project authors (see CONTRIBUTORS.md) <paul.schmiedmayer@tum.de>
 # 
 # SPDX-License-Identifier: MIT
 # 
@@ -9,12 +9,9 @@
 # Apodini .gitignore File
 
 # Swift Package Manager
-Package.resolved
 *.xcodeproj
 .swiftpm
 .build/
-.xcodebuild/
-coverage.lcov
 
 # IDE related folders
 .idea
@@ -27,6 +24,5 @@ xcuserdata/
 .env
 
 # Documentation generation
-docs/
-docc2html/
+.xcodebuild/
 *.doccarchive
