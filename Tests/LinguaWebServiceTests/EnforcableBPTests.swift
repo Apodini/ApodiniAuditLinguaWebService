@@ -25,19 +25,6 @@ final class EnforcableBPTests: XCTApodiniTest {
         headers.add(name: "Authorization", value: authorization.value)
         return headers
     }()
-    
-    override class func setUp() {
-        // Run the AuditSetupCommand to install NLTK. It doesn't matter which WebService we specify.
-        let app = Application()
-        let commandType = AuditSetupNLTKCommand<ImprovedLinguaWebService>.self
-        let command = commandType.init()
-        do {
-            try command.run(app: app)
-            print("Installed requirements!")
-        } catch {
-            print("Could not install requirements: \(error)")
-        }
-    }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
