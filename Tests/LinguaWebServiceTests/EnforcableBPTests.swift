@@ -14,6 +14,7 @@ import XCTApodiniNetworking
 import ApodiniHTTPProtocol
 import XCTApodini
 import Shared
+@testable import ApodiniAudit
 
 /// Checks that the WebService's output is correct, such as correct status code upon unauthorized access.
 /// We use the ``ImprovedLinguaWebService`` here.
@@ -24,6 +25,19 @@ final class EnforcableBPTests: XCTApodiniTest {
         headers.add(name: "Authorization", value: authorization.value)
         return headers
     }()
+    
+    override class func setUp() {
+        // Run the AuditSetupCommand to install NLTK. It doesn't matter which WebService we specify.
+        let app = Application()
+        let commandType = AuditSetupNLTKCommand<ImprovedLinguaWebService>.self
+        let command = commandType.init()
+        do {
+            try command.run(app: app)
+            print("Installed requirements!")
+        } catch {
+            print("Could not install requirements: \(error)")
+        }
+    }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
