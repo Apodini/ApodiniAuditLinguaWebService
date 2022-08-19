@@ -39,7 +39,7 @@ To run the tests which validate the audits, the report format, and the enforcabl
 $ swift test
 ```
 
-Alternatively, the tests can be run on various platforms by manually starting the ["Build & Test" workflow]().
+Alternatively, the tests can be run on various platforms by manually starting the ["Build & Test" workflow](https://github.com/Apodini/ApodiniAuditLinguaWebService/actions/workflows/build.yml).
 
 ## License
 This project is licensed under the MIT License. See [Licenses](https://github.com/Apodini/Template-Repository/tree/develop/LICENSES) for more information.
