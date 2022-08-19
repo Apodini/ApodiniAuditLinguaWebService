@@ -42,12 +42,6 @@ final class CheckableBPTests: XCTApodiniTest {
         }
     }
     
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        
-
-    }
-    
     func testDeleteReturnTypeFinding() throws {
         let finding = try CheckableBPTests.getSingleFindingFromSingleAudit(
             bptype: EndpointHasComplexReturnType.self,
@@ -68,15 +62,66 @@ final class CheckableBPTests: XCTApodiniTest {
         XCTAssertEqual(finding, .tooManyParameters(count: 12))
     }
     
-//    func test() throws {
-//        let finding = try getSingleFindingFromSingleAudit(
-//            bptype: ReasonableParameterCount.self,
-//            findingType: ParameterCountFinding.self,
-//            endpointPath: "/en/dictionary/entries",
-//            handlerName: "SearchDictionaryHandler"
-//        )
-//        XCTAssertEqual(finding, .tooManyParameters(count: 12))
-//    }
+    func testETagSuggestion() throws {
+        let finding = try CheckableBPTests.getSingleFindingFromSingleAudit(
+            bptype: EncourageETags.self,
+            findingType: ETagsFinding.self,
+            endpointPath: "/en/lectures/{lectureId}/image/{imageId}",
+            handlerName: "GetImageHandler"
+        )
+        XCTAssertEqual(finding, .cacheableBlob)
+    }
+    
+    func testPluralDetection() throws {
+        let finding = CheckableBPTests.getFindings(
+            PluralSegmentForStoresAndCollections.self,
+            findingType: BadCollectionSegmentName.self,
+            endpointPath: "/en/lectures/{lectureId}/image/{imageId}",
+            handlerName: "GetImageHandler"
+        )
+        
+        XCTAssertEqual(finding.count, 1)
+        let fndg = try XCTUnwrap(finding.first)
+        XCTAssertEqual(fndg, .nonPluralBeforeParameter("image"))
+    }
+    
+    func testCapitalLetterDetection() throws {
+        let finding = CheckableBPTests.getFindings(
+            LowercaseURLPathSegments.self,
+            findingType: LowercasePathSegmentsFinding.self,
+            endpointPath: "/en/getFavoriteLectures",
+            handlerName: "GetFavoriteLecturesHandler"
+        )
+        
+        XCTAssertEqual(finding.count, 1)
+        let fndg = try XCTUnwrap(finding.first)
+        XCTAssertEqual(fndg, .uppercaseCharacterFound(segment: "getFavoriteLectures"))
+    }
+    
+    func testCRUDVerbDetection() throws {
+        let finding = CheckableBPTests.getFindings(
+            NoCRUDVerbsInURLPathSegments.self,
+            findingType: URLCRUDVerbsFinding.self,
+            endpointPath: "/en/getFavoriteLectures",
+            handlerName: "GetFavoriteLecturesHandler"
+        )
+        
+        XCTAssertEqual(finding.count, 1)
+        let fndg = try XCTUnwrap(finding.first)
+        XCTAssertEqual(fndg, .crudVerbFound(segment: "getFavoriteLectures"))
+    }
+    
+    func testNoFindingsForImprovedWebService() {
+        let runcommandtype = AuditRunCommand<ImprovedLinguaWebService>.self
+        var runcommand = runcommandtype.init()
+        
+        do {
+            let nonEmptyAudits = try CheckableBPTests.getAuditsForAuditRunCommand(&runcommand).filter { $0.findings.count > 0 }
+            XCTAssertEqual(nonEmptyAudits.count, 0)
+        } catch {
+            fatalError("could not get audits: \(error)")
+        }
+    }
     
     private static func getSingleFindingFromSingleAudit<F: Finding>(
         bptype: BestPractice.Type,
@@ -93,7 +138,31 @@ final class CheckableBPTests: XCTApodiniTest {
         return try XCTUnwrap(audit.findings.first) as! F
     }
     
-    private static func getAuditsForAuditRunCommand<T: WebService>(_ command: inout AuditRunCommand<T>) throws -> [Audit] {
+    private static func getFindings<F: Finding>(
+        _ bptype: BestPractice.Type,
+        findingType: F.Type,
+        endpointPath: String,
+        handlerName: String,
+        webServiceString: String = "BadLinguaWebService"
+    ) -> [F] {
+        let bpaudits = audits.filter {
+            type(of: $0.bestPractice) == bptype &&
+            $0.endpoint.bareHandlerName(webServiceString) == handlerName &&
+            $0.endpoint.absolutePath.pathString == endpointPath
+        }
+        return bpaudits.flatMap {
+            $0.findings.compactMap {
+                $0 as? F
+            }
+        }
+    }
+    
+    static func getAuditsForAuditRunCommand<T: WebService>(_ command: inout AuditRunCommand<T>) throws -> [Audit] {
+        let report = try getReportForAuditRunCommand(&command)
+        return report.audits
+    }
+    
+    static func getReportForAuditRunCommand<T: WebService>(_ command: inout AuditRunCommand<T>) throws -> Report {
         command.webService = .init()
         
         let app = Application()
@@ -106,6 +175,6 @@ final class CheckableBPTests: XCTApodiniTest {
         }
         let auditInterfaceExporter = try XCTUnwrap(optionalExporter?.typeErasedInterfaceExporter as? AuditInterfaceExporter)
         
-        return auditInterfaceExporter.report.audits
+        return auditInterfaceExporter.report
     }
 }
