@@ -169,7 +169,6 @@ final class CheckableBPTests: XCTApodiniTest {
         try command.run(app: app)
         
         // Get the AuditInterfaceExporter
-        // FUTURE We just get the first one, for now we do not consider the case of multiple exporters
         let optionalExporter = app.interfaceExporters.first { exporter in
             exporter.typeErasedInterfaceExporter is AuditInterfaceExporter
         }
