@@ -20,11 +20,8 @@ This is an exemplary Web Service which demonstrates ApodiniAudit. ApodiniAudit i
 When auditing a Web Service using ApodiniAudit, Python & NLTK are used to perform linguistic analysis. Thus, we need to install them before running an audit. This is done automatically when running the tests.
 
 A Python 3 installation is required. Once Python is installed, NLTK and its dependencies can be installed as follows:
-
 ```
-$ swift build ImprovedApodiniWebService
-$ cd .build/debug
-$ ./ImprovedLinguaWebService audit setup-nltk
+$ swift run ImprovedLinguaWebService audit setup-nltk
 ```
 
 ## Usage

@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Apodini/Apodini.git",
       "state" : {
-        "branch" : "simonbohnen/pythonkit",
-        "revision" : "cc2b308680132328792628bbaf1d8c59e04a8083"
+        "branch" : "develop",
+        "revision" : "8a7dd9628f2a9cd8665d8b39accfee449a9d7fa5"
       }
     },
     {
