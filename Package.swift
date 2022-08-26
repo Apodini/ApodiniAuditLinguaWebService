@@ -21,8 +21,8 @@ let package = Package(
         .executable(name: "ImprovedLinguaWebService", targets: ["ImprovedLinguaWebService"])
     ],
     dependencies: [
-        // FUTURE change to standard Apodini
-        .package(url: "https://github.com/Apodini/Apodini.git", branch: "develop"),
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
+        .package(url: "https://github.com/Apodini/Apodini.git", .upToNextMinor(from: "0.10.0")),
         .package(url: "https://github.com/vapor/fluent-kit.git", from: "1.16.0"),
         .package(url: "https://github.com/vapor/fluent-sqlite-driver", from: "4.2.0")
     ],
